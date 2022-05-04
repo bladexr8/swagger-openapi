@@ -1,0 +1,133 @@
+openapi: 3.0.3
+info:
+  title: FarmStall API
+  version: v1
+servers:
+- url: https://farmstall.designapis.com/v1
+paths:
+  /reviews:
+    get:
+      description: Get a bunch of reviews
+      parameters:
+      - name: maxRating
+        description: Filter the reviews by the maximum rating
+        in: query
+        schema:
+          type: number
+      responses:
+        200:
+          description: a bunch of reviews
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    rating:
+                      type: integer
+                      description: rating of the farmstall item, 1 - 5 only
+                      minimum: 1
+                      maximum: 5
+                    message:
+                      type: string
+                      description: comments left by user
+                    uuid:
+                      type: string
+                      description: unique identifier for review, 36 character uuid
+                      pattern: '^[0-9a-fA-F\-]{36}$'
+                    userid:
+                      type: string
+                      description: userid of reviewer, 36 character uuid
+                      pattern: '^[0-9a-fA-F\-]{36}$'
+                      nullable: true
+    post:
+      description: Create a new review
+      requestBody:
+        description: a new Review
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                message: A lovely experience
+                rating: 4
+              properties:
+                rating:
+                  type: integer
+                  description: rating of the farmstall item, 1 - 5 only
+                  example: 5
+                  minimum: 1
+                  maximum: 5
+                message:
+                  type: string
+                  description: comments left by user
+                  example: Absolutely superb! Life changing!
+                userid:
+                  type: string
+                  description: userid of reviewer, 36 character uuid
+                  pattern: '^[0-9a-fA-F\-]{36}$'
+                  nullable: true
+      responses:
+        '201':
+          description: Successfully created a new Review
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rating:
+                    type: integer
+                    description: rating of the farmstall item, 1 - 5 only
+                    minimum: 1
+                    maximum: 5
+                  message:
+                    type: string
+                    description: comments left by user
+                  uuid:
+                    type: string
+                    description: unique identifier for review, 36 character uuid
+                    pattern: '^[0-9a-fA-F\-]{36}$'
+                  userid:
+                    type: string
+                    description: userid of reviewer, 36 character uuid
+                    pattern: '^[0-9a-fA-F\-]{36}$'
+                    nullable: true
+  /reviews/{reviewId}:
+    get:
+      description: Get a single review object
+      parameters:
+      - in: path
+        name: reviewId
+        required: true
+        schema:
+          type: string
+          description: The review's ID
+          example: 3b5b1707-b82c-4b1d-9078-157053902525
+      responses:
+        '200':
+          description: Review object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rating:
+                    type: integer
+                    description: rating of the farmstall item, 1 - 5 only
+                    example: 5
+                    minimum: 1
+                    maximum: 5
+                  message:
+                    type: string
+                    description: comments left by user
+                    example: Absolutely superb! Life changing!
+                  userid:
+                    type: string
+                    description: userid of reviewer, 36 character uuid
+                    pattern: '^[0-9a-fA-F\-]{36}$'
+                    nullable: true
+            
+        
+                      
+          
